@@ -1,8 +1,4 @@
-class Dungeon:
-    def __init__(self, name):
-        self.name = name
-    def getName(self):
-        return self.name
+
 
 class LifeForm:
     def __init__(self, type):
@@ -27,3 +23,19 @@ class Herbivore(Animal):
 
 class Omnivorous(Carnivorous,Herbivore):
     pass
+
+
+class Dungeon:
+    def __init__(self, name):
+        self.name = name
+        self.lifeForms = []
+
+    def getName(self) -> str:
+        return self.name
+
+    def addLifeForm(self, subject: LifeForm):
+        self.lifeForms.append(subject)
+
+    def listLifeForms(self):
+        for form in self.lifeForms:
+            print(form.getName())

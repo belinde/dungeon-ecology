@@ -1,6 +1,7 @@
 from DungeonEcologyCore import Entities
 import sys
 
-subj = Entities.Omnivorous('uomo')
-
-print(subj.getName(), 'è un', subj.__class__)
+dungeon = Entities.Dungeon("Octo")
+dungeon.addLifeForm(Entities.Herbivore('mucca'))
+dungeon.addLifeForm(Entities.Carnivorous('lupo'))
+dungeon.listLifeForms()
