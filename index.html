@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Dungeon Ecology</title>
+    <meta name="description" content="Create a dungeon and try to balance its ecology">
+    <meta name="author" content="Franco Traversaro">
+    <link rel="stylesheet" href="graphics/reset.css">
+    <link rel="stylesheet" href="graphics/style.css">
+    <script src="scripts/game.js" type="text/javascript"></script>
+    <script src="scripts/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="scripts/bindings.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <table>
+        <tbody>
+            <tr>
+                <th>Money:</th>
+                <td><span id="money"></span></td>
+                <td>
+                    <button onclick="run.gain(100)">+100</button>
+                    <button onclick="run.pay(100)">-100</button>
+                </td>
+            </tr>
+            <tr>
+              <th>Rooms:</th>
+              <td><ol id="rooms"></ol></td>
+              <td>
+                  <input type="number" value="60" id="newroomw" class="short">
+                  X
+                  <input type="number" value="40" id="newroomh" class="short">
+                  <button id="newroom">Add</button>
+              </td>
+        </tbody>
+    </table>
+</body>
+
+</html>
