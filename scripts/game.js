@@ -58,6 +58,13 @@ class Game {
         }
     }
 
+    getRoom(idx) {
+      if ( typeof this._rooms[idx] === 'undefined') {
+          new DeException("That room doesn't exists!");
+      }
+      return this._rooms[idx];
+    }
+
     createRoom(width, height) {
         var room = new Room(width, height);
         this.pay(room.price());

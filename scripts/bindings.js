@@ -6,8 +6,8 @@ $(function() {
     window.addEventListener('dungeco.rooms.changed', function(evt) {
         var list = $('#rooms');
         list.find('.room').remove();
-        evt.detail.forEach(function (room, idx) {
-            $('<li class="room"><a data-idx="'+idx+'">'+room.label()+'</a></li>').appendTo(list);
+        evt.detail.forEach(function(room, idx) {
+            $('<a class="room list-group-item" href="javascript:showRoom(' + idx + ');">' + room.label() + '</a>').appendTo(list);
         });
         $('#modalNewRoom').modal('hide');
     });
@@ -30,3 +30,10 @@ $(function() {
     run = new Game();
     run.load();
 });
+
+function showRoom(idx) {
+  var sr = $('#showRoom');
+  sr.removeClass('hidden');
+  var room = run.getRoom(idx);
+  sr.find('.panel-title').text(room.label());
+}
