@@ -7,7 +7,7 @@ $(function() {
         var list = $('#rooms');
         list.find('.room').remove();
         evt.detail.forEach(function(room, idx) {
-            $('<a class="room list-group-item" href="javascript:showRoom(' + idx + ');">' + room.label() + '</a>').appendTo(list);
+            $('<a class="room list-group-item" href="javascript:showRoom(' + idx + ');">' + room.name + '</a>').appendTo(list);
         });
         $('#modalNewRoom').modal('hide');
     });
@@ -20,8 +20,18 @@ $(function() {
         }
     };
 
+    $('#modalNewRoom').on('change', '.form-control', function() {
+        var room = new Room(
+            $('#newroomt').val(),
+            parseInt($('#newroomw').val()),
+            parseInt($('#newroomh').val())
+        );
+        $('#buyRoomPreviewPrice').text(room.price());
+    });
+
     $('#newroom').click(function() {
         run.createRoom(
+            $('#newroomt').val(),
             parseInt($('#newroomw').val()),
             parseInt($('#newroomh').val())
         );
@@ -32,8 +42,8 @@ $(function() {
 });
 
 function showRoom(idx) {
-  var sr = $('#showRoom');
-  sr.removeClass('hidden');
-  var room = run.getRoom(idx);
-  sr.find('.panel-title').text(room.label());
+    var sr = $('#showRoom');
+    sr.removeClass('hidden');
+    var room = run.getRoom(idx);
+    sr.find('.panel-title').text(room.name);
 }

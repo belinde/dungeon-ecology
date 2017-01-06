@@ -1,36 +1,53 @@
-class Room {
-    constructor(width, height) {
-        this.height = parseInt(height);
-        this.width = parseInt(width);
-    }
-
-    price() {
-        return this.width * this.height;
-    }
-
-    label() {
-        return 'stanza ' + this.width + 'X' + this.height;
-    }
-}
-
 class DeEvent {
-  constructor(name, data) {
-      name = 'dungeco.' + name;
-      console.log("Firing: " + name);
-      window.dispatchEvent(new CustomEvent(name, {
-          'detail': data
-      }));
-  }
+    constructor(name, data) {
+        name = 'dungeco.' + name;
+        console.log("Firing: " + name);
+        window.dispatchEvent(new CustomEvent(name, {
+            'detail': data
+        }));
+    }
 }
 
 class DeException {
     constructor(message) {
         this.message = message;
-        throw this;
     }
 }
 
+function database(section, item) {
+    if (typeof DungeonEcologyDatabase[section][item] == 'undefined') {
+        new DeException("Unexistent key '" + item + "' in container '" + section + "'");
+    }
+    return DungeonEcologyDatabase[section][item];
+}
 
+class RoomType {
+    constructor(type) {
+        this.type = '' + type;
+        this.data = database('roomtypes', this.type);
+    }
+
+    priceModifier() {
+        return (this.data.fertility * this.data.luminance * this.data.humidity) / 300;
+    }
+}
+
+class Room {
+    constructor(type, width, height) {
+        this.RoomType = new RoomType(type);
+        this.height = parseInt(height);
+        this.width = parseInt(width);
+        this.name = type + ' ' + this.width + 'X' + this.height;
+    }
+
+    price() {
+        return parseInt(this.width * this.height * this.RoomType.priceModifier());
+    }
+
+    rename(newName) {
+        this.name = '' + newName;
+    }
+}
 
 class Game {
     constructor() {
@@ -54,19 +71,19 @@ class Game {
             this._money -= money;
             new DeEvent('money.changed', this._money);
         } else {
-            new DeException("You don't have enough money!");
+            throw new DeException("You don't have enough money!");
         }
     }
 
     getRoom(idx) {
-      if ( typeof this._rooms[idx] === 'undefined') {
-          new DeException("That room doesn't exists!");
-      }
-      return this._rooms[idx];
+        if (typeof this._rooms[idx] === 'undefined') {
+            throw new DeException("That room doesn't exists!");
+        }
+        return this._rooms[idx];
     }
 
-    createRoom(width, height) {
-        var room = new Room(width, height);
+    createRoom(type, width, height) {
+        var room = new Room(type, width, height);
         this.pay(room.price());
         this._rooms.push(room);
         new DeEvent('rooms.changed', this._rooms);
