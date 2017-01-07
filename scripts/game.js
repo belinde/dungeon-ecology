@@ -25,6 +25,8 @@ function database(section, item) {
 function unserialize(jsonString) {
     this.parser = function parser(rough) {
         switch (true) {
+            case (!(rough instanceof Object)):
+                return rough;
             case (typeof rough._DeClass !== 'undefined'):
                 var parsed = eval('new ' + rough._DeClass + '();');
                 for (var property in rough) {
@@ -146,9 +148,13 @@ class Game extends Serializable {
     }
 
     createRoom(type, width, height) {
-        var room = new Room(type, width, height);
-        this.pay(room.price());
-        this._rooms.push(room);
-        new DeEvent('rooms.changed', this._rooms);
+        if (width > 0 && height > 0) {
+            var room = new Room(type, width, height);
+            this.pay(room.price());
+            this._rooms.push(room);
+            new DeEvent('rooms.changed', this._rooms);
+        } else {
+            throw new DeException("Invalid width or height! Both must be greater than zero.");
+        }
     }
 }

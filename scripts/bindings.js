@@ -6,9 +6,13 @@ $(function() {
     window.addEventListener('dungeco.rooms.changed', function(evt) {
         var list = $('#rooms');
         list.find('.room').remove();
-        evt.detail.forEach(function(room, idx) {
-            $('<a class="room list-group-item" href="javascript:showRoom(' + idx + ');">' + room.name + '</a>').appendTo(list);
-        });
+        if (evt.detail.length) {
+            evt.detail.forEach(function(room, idx) {
+                $('<a class="room list-group-item" href="javascript:showRoom(' + idx + ');">' + room.name + '</a>').appendTo(list);
+            });
+        } else {
+            $('<a class="list-group-item room disabled">No rooms yet :-(</a>').appendTo(list);
+        }
         $('#modalNewRoom').modal('hide');
     });
     window.onerror = function(message, file, line, col, error) {
@@ -38,8 +42,7 @@ $(function() {
     });
 
     run = unserialize(localStorage.getItem('DungeonEcologyRun'));
-    if (run instanceof Game) {
-    } else {
+    if (run instanceof Game) {} else {
         run = new Game();
     }
     new DeEvent('money.changed', run._money);
