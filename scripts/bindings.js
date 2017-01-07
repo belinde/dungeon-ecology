@@ -23,8 +23,8 @@ $(function() {
     $('#modalNewRoom').on('change', '.form-control', function() {
         var room = new Room(
             $('#newroomt').val(),
-            parseInt($('#newroomw').val()),
-            parseInt($('#newroomh').val())
+            parseInt($('#newroomw').val()) || 0,
+            parseInt($('#newroomh').val()) || 0
         );
         $('#buyRoomPreviewPrice').text(room.price());
     });
@@ -32,13 +32,18 @@ $(function() {
     $('#newroom').click(function() {
         run.createRoom(
             $('#newroomt').val(),
-            parseInt($('#newroomw').val()),
-            parseInt($('#newroomh').val())
+            parseInt($('#newroomw').val()) || 0,
+            parseInt($('#newroomh').val()) || 0
         );
     });
 
-    run = new Game();
-    run.load();
+    run = unserialize(localStorage.getItem('DungeonEcologyRun'));
+    if (run instanceof Game) {
+    } else {
+        run = new Game();
+    }
+    new DeEvent('money.changed', run._money);
+    new DeEvent('rooms.changed', run._rooms);
 });
 
 function showRoom(idx) {
