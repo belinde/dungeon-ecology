@@ -3,16 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Dungeon Ecology</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dungeon Ecology</title>
     <meta name="description" content="Create a dungeon and try to balance its ecology">
     <meta name="author" content="Franco Traversaro">
-
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="graphics/style.css">
-
     <script src="dist/bundle.js" type="text/javascript"></script>
+
     <script src="scripts/jquery-3.1.1.min.js" type="text/javascript"></script>
     <script src="scripts/bindings.js" type="text/javascript"></script>
     <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
@@ -26,25 +25,28 @@
                 <a class="navbar-brand" href="#">Dungeon Ecology</a>
             </div>
 
-            <div class="navbar-text navbar-right">
-                <a class="dropdown-toggle" data-toggle="dropdown" role="button">
-                    <span class="glyphicon glyphicon-wrench"></span>
+            <ul class="nav navbar-nav">
+                <li><a href="javascript:DungeonEcology.game.saveGame()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</a></li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" role="button">
+                    <span class="glyphicon glyphicon-cd"></span>
+                    <span id="money"></span>
                     <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a onclick="DungeonEcology.game.gain(10)">+10 <span class="glyphicon glyphicon-cd"></span></a></li>
-                    <li><a onclick="DungeonEcology.game.gain(100)">+100 <span class="glyphicon glyphicon-cd"></span></a></li>
-                    <li><a onclick="DungeonEcology.game.gain(1000)">+1000 <span class="glyphicon glyphicon-cd"></span></a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a onclick="DungeonEcology.game.pay(10)">&ndash;10 <span class="glyphicon glyphicon-cd"></span></a></li>
-                    <li><a onclick="DungeonEcology.game.pay(100)">&ndash;100 <span class="glyphicon glyphicon-cd"></span></a></li>
-                    <li><a onclick="DungeonEcology.game.pay(1000)">&ndash;1000 <span class="glyphicon glyphicon-cd"></span></a></li>
-                </ul>
-            </div>
-            <p class="navbar-text navbar-right">
-                Money: <span id="money"></span>
-                <span class="glyphicon glyphicon-cd"></span>
-            </p>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a href="javascript:DungeonEcology.game.gain(10)">+10 <span class="glyphicon glyphicon-cd"></span></a></li>
+                      <li><a href="javascript:DungeonEcology.game.gain(100)">+100 <span class="glyphicon glyphicon-cd"></span></a></li>
+                      <li><a href="javascript:DungeonEcology.game.gain(1000)">+1000 <span class="glyphicon glyphicon-cd"></span></a></li>
+                      <li><a href="javascript:DungeonEcology.game.gain(10000)">+10000 <span class="glyphicon glyphicon-cd"></span></a></li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="javascript:DungeonEcology.game.pay(10)">&ndash;10 <span class="glyphicon glyphicon-cd"></span></a></li>
+                      <li><a href="javascript:DungeonEcology.game.pay(100)">&ndash;100 <span class="glyphicon glyphicon-cd"></span></a></li>
+                      <li><a href="javascript:DungeonEcology.game.pay(1000)">&ndash;1000 <span class="glyphicon glyphicon-cd"></span></a></li>
+                      <li><a href="javascript:DungeonEcology.game.pay(10000)">&ndash;10000 <span class="glyphicon glyphicon-cd"></span></a></li>
+                  </ul>
+                </li>
+            </ul>
+
         </div>
         <!-- /.container-fluid -->
     </nav>
