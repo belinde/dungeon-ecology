@@ -1,9 +1,10 @@
-var run;
 $(function() {
-    window.addEventListener('dungeco.money.changed', function(evt) {
-        $('#money').text(evt.detail);
+
+    DungeonEcology.game.subscribe(function(state) {
+      $('#money').text(state.money);
     });
-    window.addEventListener('dungeco.rooms.changed', function(evt) {
+
+/*    window.addEventListener('dungeco.rooms.changed', function(evt) {
         var list = $('#rooms');
         list.find('.room').remove();
         if (evt.detail.length) {
@@ -14,17 +15,18 @@ $(function() {
             $('<a class="list-group-item room disabled">No rooms yet :-(</a>').appendTo(list);
         }
         $('#modalNewRoom').modal('hide');
-    });
+    }); */
+
     window.onerror = function(message, file, line, col, error) {
-        if (error instanceof DeException) {
+        if (typeof error === 'string') {
             var modal = $('#modalError');
-            modal.find('p').text(error.message);
+            modal.find('p').text(error);
             modal.modal('show');
             return true;
         }
     };
 
-    $('#modalNewRoom').on('change', '.form-control', function() {
+/*    $('#modalNewRoom').on('change', '.form-control', function() {
         var room = new Room(
             $('#newroomt').val(),
             parseInt($('#newroomw').val()) || 0,
@@ -39,19 +41,12 @@ $(function() {
             parseInt($('#newroomw').val()) || 0,
             parseInt($('#newroomh').val()) || 0
         );
-    });
-
-    run = unserialize(localStorage.getItem('DungeonEcologyRun'));
-    if (run instanceof Game) {} else {
-        run = new Game();
-    }
-    new DeEvent('money.changed', run._money);
-    new DeEvent('rooms.changed', run._rooms);
+    }); */
 });
 
-function showRoom(idx) {
+/*function showRoom(idx) {
     var sr = $('#showRoom');
     sr.removeClass('hidden');
     var room = run.getRoom(idx);
     sr.find('.panel-title').text(room.name);
-}
+}*/
