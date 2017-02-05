@@ -47,10 +47,6 @@ const GameClass = class Game {
             value: money
         });
     }
-
-    currentMoney() {
-        return this.store.getState().money;
-    }
 }
 
 export default GameClass
