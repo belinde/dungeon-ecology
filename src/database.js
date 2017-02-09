@@ -1,4 +1,4 @@
-var DungeonEcologyDatabase = {
+let data = {
     setup: {
         startingMoney: 20000
     },
@@ -20,3 +20,12 @@ var DungeonEcologyDatabase = {
         }
     }
 }
+
+let database = function database(section, item) {
+    if (typeof data[section][item] == 'undefined') {
+        throw "Unexistent key '" + item + "' in container '" + section + "'";
+    }
+    return data[section][item];
+}
+
+export default database;

@@ -64,7 +64,7 @@ var DungeonEcology =
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 26);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -72,7 +72,7 @@ var DungeonEcology =
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(16);
 
 
 /** Built-in value references. */
@@ -86,9 +86,9 @@ var Symbol = __WEBPACK_IMPORTED_MODULE_0__root_js__["a" /* default */].Symbol;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(17);
 
 
 
@@ -386,7 +386,7 @@ function compose() {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_symbol_observable__);
 /* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return ActionTypes; });
 /* harmony export (immutable) */ exports["a"] = createStore;
@@ -645,9 +645,9 @@ function createStore(reducer, preloadedState, enhancer) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(6);
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__createStore__["a"]; });
@@ -733,8 +733,47 @@ module.exports = g;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
+let data = {
+    setup: {
+        startingMoney: 20000
+    },
+    roomtypes: {
+        cave: {
+            fertility: 50,
+            luminance: 5,
+            humidity: 70
+        },
+        stone: {
+            fertility: 10,
+            luminance: 50,
+            humidity: 20
+        },
+        wood: {
+            fertility: 20,
+            luminance: 50,
+            humidity: 15
+        }
+    }
+}
+
+let database = function database(section, item) {
+    if (typeof data[section][item] == 'undefined') {
+        throw "Unexistent key '" + item + "' in container '" + section + "'";
+    }
+    return data[section][item];
+}
+
+/* harmony default export */ exports["a"] = database;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__reducers__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__reducers__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__entities_room__ = __webpack_require__(25);
+
 
 
 
@@ -786,19 +825,28 @@ const GameClass = class Game {
     currentMoney() {
         return this.store.getState().money;
     }
+
+    createRoom( type, width, height ) {
+        var room = new __WEBPACK_IMPORTED_MODULE_2__entities_room__["a" /* default */](type, width, height);
+        this.pay( room.price() );
+        this.store.dispatch({
+            type: 'ROOM_ADD',
+            value: room
+        });
+    }
 }
 
 /* harmony default export */ exports["a"] = GameClass;
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(14);
 
 
 
@@ -830,7 +878,7 @@ function baseGetTag(value) {
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -842,11 +890,11 @@ var freeGlobal = typeof global == 'object' && global && global.Object === Object
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(15);
 
 
 /** Built-in value references. */
@@ -856,7 +904,7 @@ var getPrototype = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__overArg_js
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -910,7 +958,7 @@ function getRawTag(value) {
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -939,7 +987,7 @@ function objectToString(value) {
 
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -961,11 +1009,11 @@ function overArg(func, transform) {
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(11);
 
 
 /** Detect free variable `self`. */
@@ -978,7 +1026,7 @@ var root = __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__["a" /* default */] || fr
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1014,7 +1062,7 @@ function isObjectLike(value) {
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1070,7 +1118,7 @@ function applyMiddleware() {
 }
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1124,7 +1172,7 @@ function bindActionCreators(actionCreators, dispatch) {
 }
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1264,14 +1312,14 @@ function combineReducers(reducers) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(21);
+module.exports = __webpack_require__(22);
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1281,7 +1329,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _ponyfill = __webpack_require__(22);
+var _ponyfill = __webpack_require__(23);
 
 var _ponyfill2 = _interopRequireDefault(_ponyfill);
 
@@ -1304,10 +1352,10 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(23)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(24)(module)))
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1336,7 +1384,7 @@ function symbolObservablePonyfill(root) {
 };
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 module.exports = function(module) {
@@ -1362,28 +1410,91 @@ module.exports = function(module) {
 
 
 /***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__money__ = __webpack_require__(25);
-
-
-
-const DungeonEcologyApp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["b" /* combineReducers */])({
-  money: __WEBPACK_IMPORTED_MODULE_1__money__["a" /* default */]
-})
-
-/* harmony default export */ exports["a"] = DungeonEcologyApp;
-
-
-/***/ },
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-const money = (state = 10000, action) => {
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__database__ = __webpack_require__(8);
+
+
+class RoomType {
+    constructor(type) {
+        this.name = '' + type;
+        this.data = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */])('roomtypes', this.name);
+    }
+
+    fertility() {
+        return this.data.fertility;
+    }
+
+    luminance() {
+        return this.data.luminance;
+    }
+
+    humidity() {
+        return this.data.humidity;
+    }
+
+    priceModifier() {
+        return (this.fertility() * this.luminance() * this.humidity()) / 300;
+    }
+}
+
+class Room {
+    constructor(type, width, height) {
+        this.setType(type);
+        this.height = parseInt(height);
+        this.width = parseInt(width);
+        this.name = this.type.name + ' ' + this.width + 'X' + this.height;
+        this.vegetables = []
+    }
+
+    setType( type ) {
+        this.type = new RoomType(type);
+        this.fertility = this.width * this.height * this.type.fertility();
+    }
+
+    price() {
+        return parseInt(this.width * this.height * this.type.priceModifier());
+    }
+
+    rename(newName) {
+        this.name = '' + newName;
+    }
+}
+
+/* harmony default export */ exports["a"] = Room;
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__money__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__rooms__ = __webpack_require__(28);
+
+
+
+
+const DungeonEcologyApp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["b" /* combineReducers */])({
+  money: __WEBPACK_IMPORTED_MODULE_1__money__["a" /* default */], rooms: __WEBPACK_IMPORTED_MODULE_2__rooms__["a" /* default */]
+})
+
+/* harmony default export */ exports["a"] = DungeonEcologyApp;
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__database__ = __webpack_require__(8);
+
+
+const money = (state, action) => {
+    if (typeof state === 'undefined') {
+        state = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */])('setup', 'startingMoney');
+    }
     switch (action.type) {
         case 'MONEY_GAIN':
             return state + action.value
@@ -1398,12 +1509,34 @@ const money = (state = 10000, action) => {
 
 
 /***/ },
-/* 26 */
+/* 28 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+var calls = {
+    ROOM_ADD: function roomAdd( state, room ) {
+        state.push(room);
+        return state;
+    }
+}
+
+const rooms = (state = [], action) => {
+    if ( typeof calls[ action.type ] === 'undefined' ) {
+        return state;
+    }
+    return calls[ action.type ](state, action.value);
+}
+
+/* harmony default export */ exports["a"] = rooms;
+
+
+/***/ },
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game__ = __webpack_require__(9);
 /* harmony export (binding) */ __webpack_require__.d(exports, "game", function() { return game; });
 
 

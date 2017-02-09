@@ -1,4 +1,9 @@
-const money = (state = 10000, action) => {
+import db from '../database';
+
+const money = (state, action) => {
+    if (typeof state === 'undefined') {
+        state = db('setup', 'startingMoney');
+    }
     switch (action.type) {
         case 'MONEY_GAIN':
             return state + action.value

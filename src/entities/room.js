@@ -1,38 +1,44 @@
+import db from '../database';
 
 class RoomType {
     constructor(type) {
         this.name = '' + type;
-        this.data = database('roomtypes', this.name);
+        this.data = db('roomtypes', this.name);
+    }
+
+    fertility() {
+        return this.data.fertility;
+    }
+
+    luminance() {
+        return this.data.luminance;
+    }
+
+    humidity() {
+        return this.data.humidity;
     }
 
     priceModifier() {
-        return (this.data.fertility * this.data.luminance * this.data.humidity) / 300;
+        return (this.fertility() * this.luminance() * this.humidity()) / 300;
     }
 }
 
 class Room {
     constructor(type, width, height) {
-        this.type = new RoomType(type);
+        this.setType(type);
         this.height = parseInt(height);
         this.width = parseInt(width);
         this.name = this.type.name + ' ' + this.width + 'X' + this.height;
-        this.fertility = this.width * this.height * this.fertility();
         this.vegetables = []
     }
 
     setType( type ) {
         this.type = new RoomType(type);
-    }
-
-    fertility() {
-        switch (this.type) {
-            default:
-            return 10;
-        }
+        this.fertility = this.width * this.height * this.type.fertility();
     }
 
     price() {
-        return parseInt(this.width * this.height * this.RoomType.priceModifier());
+        return parseInt(this.width * this.height * this.type.priceModifier());
     }
 
     rename(newName) {

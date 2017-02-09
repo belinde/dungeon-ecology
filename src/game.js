@@ -2,6 +2,7 @@ import {
     createStore
 } from 'redux'
 import combinedReducer from './reducers'
+import Room from './entities/room'
 
 const GameClass = class Game {
 
@@ -45,6 +46,19 @@ const GameClass = class Game {
         this.store.dispatch({
             type: 'MONEY_PAY',
             value: money
+        });
+    }
+
+    currentMoney() {
+        return this.store.getState().money;
+    }
+
+    createRoom( type, width, height ) {
+        var room = new Room(type, width, height);
+        this.pay( room.price() );
+        this.store.dispatch({
+            type: 'ROOM_ADD',
+            value: room
         });
     }
 }
