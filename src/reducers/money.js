@@ -1,4 +1,4 @@
-import db from '../database';
+import {database as db} from '../database';
 
 const money = (state, action) => {
     if (typeof state === 'undefined') {
@@ -6,12 +6,12 @@ const money = (state, action) => {
     }
     switch (action.type) {
         case 'MONEY_GAIN':
-            return state + action.value
+            return state + action.value;
         case 'MONEY_PAY':
-            let value = state - action.value
+            let value = state - action.value;
             return (value < 0) ? state : value;
     }
-    return state
+    return state;
 }
 
-export default money
+export {money};

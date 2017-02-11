@@ -1,44 +1,31 @@
-import db from '../database';
+import { database as db, check } from '../database';
 
-class RoomType {
-    constructor(type) {
-        this.name = '' + type;
-        this.data = db('roomtypes', this.name);
+let Room = class Room {
+    constructor(state) {
+        this.type = check(state, 'type');
+        this.height = parseInt(check(state, 'height'));
+        this.width = parseInt(check(state, 'width'));
+
+        let data = db('roomtypes', this.type);
+
+        this.name = check(state, 'name', this.description());
+        this.fertility = check(state, 'fertility', data.fertility * this.width * this.height );
+        this.curFertility = check(state, 'curFertility', this.fertility );
+        this.luminance = check(state, 'luminance', data.luminance );
+        this.humidity = check(state, 'humidity', data.humidity );
+        this.vegetables = check(state, 'vegetables', []);
     }
 
-    fertility() {
-        return this.data.fertility;
-    }
-
-    luminance() {
-        return this.data.luminance;
-    }
-
-    humidity() {
-        return this.data.humidity;
-    }
-
-    priceModifier() {
-        return (this.fertility() * this.luminance() * this.humidity()) / 300;
-    }
-}
-
-class Room {
-    constructor(type, width, height) {
-        this.setType(type);
-        this.height = parseInt(height);
-        this.width = parseInt(width);
-        this.name = this.type.name + ' ' + this.width + 'X' + this.height;
-        this.vegetables = []
-    }
-
-    setType( type ) {
-        this.type = new RoomType(type);
-        this.fertility = this.width * this.height * this.type.fertility();
+    description() {
+        return this.type + ' ' + this.width + 'X' + this.height;
     }
 
     price() {
-        return parseInt(this.width * this.height * this.type.priceModifier());
+        return parseInt(this.width * this.height * this.priceModifier());
+    }
+
+    priceModifier() {
+        return Math.round( this.fertility * this.luminance * this.humidity / 300);
     }
 
     rename(newName) {
@@ -46,4 +33,4 @@ class Room {
     }
 }
 
-export default Room
+export { Room }

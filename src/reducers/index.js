@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import money from './money';
-import rooms from './rooms';
+import {money} from './money';
+import {rooms} from './rooms';
 
 const DungeonEcologyApp = combineReducers({
   money, rooms
 })
 
-export default DungeonEcologyApp;
+export { DungeonEcologyApp };

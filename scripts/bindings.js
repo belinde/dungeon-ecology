@@ -1,21 +1,24 @@
-$(function() {
+var Game;
 
-    DungeonEcology.game.subscribe(function(state) {
+$(function() {
+    Game = new DungeonEcology.Game();
+
+    Game.subscribe(function(state) {
       $('#money').text(state.money);
     });
 
-/*    window.addEventListener('dungeco.rooms.changed', function(evt) {
+    Game.subscribe(function(state) {
         var list = $('#rooms');
         list.find('.room').remove();
-        if (evt.detail.length) {
-            evt.detail.forEach(function(room, idx) {
+        if (state.rooms.length) {
+            state.rooms.forEach(function(room, idx) {
                 $('<a class="room list-group-item" href="javascript:showRoom(' + idx + ');">' + room.name + '</a>').appendTo(list);
             });
         } else {
             $('<a class="list-group-item room disabled">No rooms yet :-(</a>').appendTo(list);
         }
         $('#modalNewRoom').modal('hide');
-    }); */
+    }); 
 
     window.onerror = function(message, file, line, col, error) {
         if (typeof error === 'string') {
@@ -26,27 +29,27 @@ $(function() {
         }
     };
 
-/*    $('#modalNewRoom').on('change', '.form-control', function() {
-        var room = new Room(
-            $('#newroomt').val(),
-            parseInt($('#newroomw').val()) || 0,
-            parseInt($('#newroomh').val()) || 0
-        );
+    $('#modalNewRoom').on('change', '.form-control', function() {
+        var room = new DungeonEcology.Room({
+            type: $('#newroomt').val(),
+            width: parseInt($('#newroomw').val()) || 0,
+            height: parseInt($('#newroomh').val()) || 0
+        });
         $('#buyRoomPreviewPrice').text(room.price());
     });
 
     $('#newroom').click(function() {
-        run.createRoom(
+        Game.createRoom(
             $('#newroomt').val(),
             parseInt($('#newroomw').val()) || 0,
             parseInt($('#newroomh').val()) || 0
         );
-    }); */
+    }); 
 });
 
-/*function showRoom(idx) {
+function showRoom(idx) {
     var sr = $('#showRoom');
     sr.removeClass('hidden');
-    var room = run.getRoom(idx);
+    var room = Game.getRoom(idx);
     sr.find('.panel-title').text(room.name);
-}*/
+}

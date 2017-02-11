@@ -1,6 +1,8 @@
+import { Room } from '../entities/room'
+
 var calls = {
     ROOM_ADD: function roomAdd( state, room ) {
-        state.push(room);
+        state.push( new Room(room) );
         return state;
     }
 }
@@ -12,4 +14,4 @@ const rooms = (state = [], action) => {
     return calls[ action.type ](state, action.value);
 }
 
-export default rooms;
+export { rooms };

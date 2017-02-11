@@ -28,4 +28,14 @@ let database = function database(section, item) {
     return data[section][item];
 }
 
-export default database;
+let check = function check(state, key, def) {
+    if (typeof state[key] == 'undefined') {
+        if (typeof def == 'undefined') {
+            throw "Missing parameter " + key;
+        }
+        return def;
+    } 
+    return state[key]; 
+}
+
+export { database, check };
