@@ -1,6 +1,8 @@
-import { createStore } from 'redux'
-import { DungeonEcologyApp as combinedReducer } from './reducers'
-import { Room } from './entities/room'
+import {
+    createStore
+} from 'redux'
+import combinedReducer from './reducers'
+import Room from './entities/room'
 
 const Game = class Game {
 
@@ -10,30 +12,35 @@ const Game = class Game {
             combinedReducer,
             persistedState ? JSON.parse(persistedState) : {}
         );
-        let game = this;
-        setInterval(function() {
-            game.saveGame()
-        }, 60000);
+        setInterval(() => this.saveGame(), 60000);
     }
 
     subscribe(callout) {
         let store = this.store;
-        this.store.subscribe(function() {
+        this.store.subscribe(function () {
             callout(store.getState());
         });
         callout(this.store.getState());
     }
 
+    dispatch(type, value) {
+        console.log("Dispatching " + type, value);
+        this.store.dispatch({
+            type: type,
+            value: value
+        });
+    }
+
     saveGame() {
         console.log("Saving to localStorage");
-        localStorage.setItem('DungeonEcologyState', JSON.stringify(this.store.getState()));
+        localStorage.setItem(
+            'DungeonEcologyState',
+            JSON.stringify(this.store.getState())
+        );
     }
 
     gain(money) {
-        this.store.dispatch({
-            type: 'MONEY_GAIN',
-            value: parseInt(money)
-        });
+        this.dispatch('MONEY_GAIN', parseInt(money));
     }
 
     pay(money) {
@@ -41,10 +48,7 @@ const Game = class Game {
         if (money > this.currentMoney()) {
             throw "You don't have enough money!";
         }
-        this.store.dispatch({
-            type: 'MONEY_PAY',
-            value: money
-        });
+        this.dispatch('MONEY_PAY', money);
     }
 
     getState(section) {
@@ -55,22 +59,26 @@ const Game = class Game {
         return this.getState('money');
     }
 
-    createRoom( type, width, height ) {
-        var room = new Room({type:type, width:width, height: height});
-        this.pay( room.price() );
-        this.store.dispatch({
-            type: 'ROOM_ADD',
-            value: room
+    createRoom(type, width, height) {
+        let room = Room.load({
+            type: type,
+            width: width,
+            height: height
         });
+        this.pay(Room.price(room));
+        this.dispatch('ROOM_ADD', room);
     }
 
     getRoom(index) {
-        var data=this.getState('rooms');
-        if ( typeof data[index] !== 'undefined') {
-            return new Room(data[index]);
+        var data = this.getState('rooms');
+        if (typeof data[index] !== 'undefined') {
+            return data[index];
         }
         throw "Unexistent room: " + index;
     }
 }
 
-export { Game, Room };
+export {
+    Game,
+    Room
+};

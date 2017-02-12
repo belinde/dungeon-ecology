@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/belinde/dungeon-ecology/issues"
   },
-  "homepage": "https://github.com/belinde/dungeon-ecology#readme",
+  "homepage": "https://belinde.github.io/dungeon-ecology",
   "dependencies": {
     "redux": "^3.6.0"
   },

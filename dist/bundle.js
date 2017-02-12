@@ -64,11 +64,53 @@ var DungeonEcology =
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 28);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__database__ = __webpack_require__(26);
+/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return database; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return check; });
+/* harmony export (binding) */ __webpack_require__.d(exports, "c", function() { return reducer; });
+
+
+let database = function database(section, item) {
+    if (typeof __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */][section][item] == 'undefined') {
+        throw "Unexistent key '" + item + "' in container '" + section + "'";
+    }
+    return __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */][section][item];
+}
+
+let check = function check(state, key, def) {
+    if (typeof state[key] == 'undefined') {
+        if (typeof def == 'undefined') {
+            throw "Missing parameter " + key;
+        }
+        return def;
+    }
+    return state[key];
+}
+
+let reducer = function reducer(calls, defaultStateValue) {
+    return (state = [], action) => {
+        if (typeof calls[action.type] === 'undefined') {
+            return state;
+        }
+        if (typeof state === 'undefined') {
+            state = defaultStateValue;
+        }
+        return calls[action.type](state, action.value);
+    }
+}
+
+
+
+/***/ },
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -102,50 +144,6 @@ if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' 
 
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
-
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__database__ = __webpack_require__(9);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return Room; });
-
-
-let Room = class Room {
-    constructor(state) {
-        this.type = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* check */])(state, 'type');
-        this.height = parseInt(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* check */])(state, 'height'));
-        this.width = parseInt(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* check */])(state, 'width'));
-
-        let data = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["b" /* database */])('roomtypes', this.type);
-
-        this.name = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* check */])(state, 'name', this.description());
-        this.fertility = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* check */])(state, 'fertility', data.fertility * this.width * this.height );
-        this.curFertility = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* check */])(state, 'curFertility', this.fertility );
-        this.luminance = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* check */])(state, 'luminance', data.luminance );
-        this.humidity = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* check */])(state, 'humidity', data.humidity );
-        this.vegetables = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["a" /* check */])(state, 'vegetables', []);
-    }
-
-    description() {
-        return this.type + ' ' + this.width + 'X' + this.height;
-    }
-
-    price() {
-        return parseInt(this.width * this.height * this.priceModifier());
-    }
-
-    priceModifier() {
-        return Math.round( this.fertility * this.luminance * this.humidity / 300);
-    }
-
-    rename(newName) {
-        this.name = '' + newName;
-    }
-}
-
-
 
 /***/ },
 /* 2 */
@@ -777,68 +775,58 @@ module.exports = g;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(exports, "b", function() { return database; });
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return check; });
-let data = {
-    setup: {
-        startingMoney: 20000
-    },
-    roomtypes: {
-        cave: {
-            fertility: 50,
-            luminance: 5,
-            humidity: 70
-        },
-        stone: {
-            fertility: 10,
-            luminance: 50,
-            humidity: 20
-        },
-        wood: {
-            fertility: 20,
-            luminance: 50,
-            humidity: 15
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tools__ = __webpack_require__(0);
+
+
+class Room {
+    load(state) {
+        let type = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["a" /* check */])(state, 'type');
+        let data = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["b" /* database */])('roomtypes', type);
+        let height = parseInt(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["a" /* check */])(state, 'height'));
+        let width = parseInt(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["a" /* check */])(state, 'width'));
+        let fert = data.fertility * width * height;
+
+        return {
+            type: type,
+            height: height,
+            width: width,
+            name: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["a" /* check */])(state, 'name', type + ' ' + width + 'X' + height),
+            fertility: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["a" /* check */])(state, 'fertility', fert),
+            curFertility: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["a" /* check */])(state, 'curFertility', fert),
+            luminance: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["a" /* check */])(state, 'luminance', data.luminance),
+            humidity: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["a" /* check */])(state, 'humidity', data.humidity),
+            vegetables: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["a" /* check */])(state, 'vegetables', [])
         }
+    }
+
+    price(room) {
+        return Math.round(room.width * room.height * room.fertility * room.luminance * room.humidity * __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["b" /* database */])('setup', 'roomPriceModifier'));
+    }
+
+    rename(room, newName) {
+        room.name = '' + newName;
+        return room;
     }
 }
 
-let database = function database(section, item) {
-    if (typeof data[section][item] == 'undefined') {
-        throw "Unexistent key '" + item + "' in container '" + section + "'";
-    }
-    return data[section][item];
-}
-
-let check = function check(state, key, def) {
-    if (typeof state[key] == 'undefined') {
-        if (typeof def == 'undefined') {
-            throw "Missing parameter " + key;
-        }
-        return def;
-    } 
-    return state[key]; 
-}
-
-
+/* harmony default export */ exports["a"] = new Room();
 
 /***/ },
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__money__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__rooms__ = __webpack_require__(27);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return DungeonEcologyApp; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__money__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__rooms__ = __webpack_require__(28);
 
 
 
 
-const DungeonEcologyApp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["b" /* combineReducers */])({
-  money: __WEBPACK_IMPORTED_MODULE_1__money__["a" /* money */], rooms: __WEBPACK_IMPORTED_MODULE_2__rooms__["a" /* rooms */]
-})
-
-
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["b" /* combineReducers */])({
+  money: __WEBPACK_IMPORTED_MODULE_1__money__["a" /* default */],
+  rooms: __WEBPACK_IMPORTED_MODULE_2__rooms__["a" /* default */]
+});
 
 /***/ },
 /* 11 */
@@ -1415,61 +1403,64 @@ module.exports = function(module) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__database__ = __webpack_require__(9);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return money; });
-
-
-const money = (state, action) => {
-    if (typeof state === 'undefined') {
-        state = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__database__["b" /* database */])('setup', 'startingMoney');
+/* harmony default export */ exports["a"] = {
+    setup: {
+        startingMoney: 20000,
+        roomPriceModifier: .0013
+    },
+    roomtypes: {
+        cave: {
+            fertility: 50,
+            luminance: 5,
+            humidity: 70
+        },
+        stone: {
+            fertility: 10,
+            luminance: 50,
+            humidity: 20
+        },
+        wood: {
+            fertility: 20,
+            luminance: 50,
+            humidity: 15
+        }
     }
-    switch (action.type) {
-        case 'MONEY_GAIN':
-            return state + action.value;
-        case 'MONEY_PAY':
-            let value = state - action.value;
-            return (value < 0) ? state : value;
-    }
-    return state;
-}
-
-
-
+};
 
 /***/ },
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__entities_room__ = __webpack_require__(1);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return rooms; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tools__ = __webpack_require__(0);
 
 
-var calls = {
-    ROOM_ADD: function roomAdd( state, room ) {
-        state.push( new __WEBPACK_IMPORTED_MODULE_0__entities_room__["a" /* Room */](room) );
-        return state;
-    }
-}
-
-const rooms = (state = [], action) => {
-    if ( typeof calls[ action.type ] === 'undefined' ) {
-        return state;
-    }
-    return calls[ action.type ](state, action.value);
-}
-
-
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["c" /* reducer */])({
+    MONEY_GAIN: (state, value) => state + value,
+    MONEY_PAY: (state, value) => (state >= value) ? state - value : state
+}, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["b" /* database */])('setup', 'startingMoney'));
 
 /***/ },
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__tools__ = __webpack_require__(0);
+
+
+/* harmony default export */ exports["a"] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__tools__["c" /* reducer */])({
+    ROOM_ADD: (state, room) => [...state, room]
+}, []);
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__reducers__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__entities_room__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__entities_room__ = __webpack_require__(9);
 /* harmony reexport (binding) */ __webpack_require__.d(exports, "Room", function() { return __WEBPACK_IMPORTED_MODULE_2__entities_room__["a"]; });
 /* harmony export (binding) */ __webpack_require__.d(exports, "Game", function() { return Game; });
 
@@ -1481,33 +1472,38 @@ const Game = class Game {
     constructor() {
         let persistedState = localStorage.getItem('DungeonEcologyState');
         this.store = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_redux__["a" /* createStore */])(
-            __WEBPACK_IMPORTED_MODULE_1__reducers__["a" /* DungeonEcologyApp */],
+            __WEBPACK_IMPORTED_MODULE_1__reducers__["a" /* default */],
             persistedState ? JSON.parse(persistedState) : {}
         );
-        let game = this;
-        setInterval(function() {
-            game.saveGame()
-        }, 60000);
+        setInterval(() => this.saveGame(), 60000);
     }
 
     subscribe(callout) {
         let store = this.store;
-        this.store.subscribe(function() {
+        this.store.subscribe(function () {
             callout(store.getState());
         });
         callout(this.store.getState());
     }
 
+    dispatch(type, value) {
+        console.log("Dispatching " + type, value);
+        this.store.dispatch({
+            type: type,
+            value: value
+        });
+    }
+
     saveGame() {
         console.log("Saving to localStorage");
-        localStorage.setItem('DungeonEcologyState', JSON.stringify(this.store.getState()));
+        localStorage.setItem(
+            'DungeonEcologyState',
+            JSON.stringify(this.store.getState())
+        );
     }
 
     gain(money) {
-        this.store.dispatch({
-            type: 'MONEY_GAIN',
-            value: parseInt(money)
-        });
+        this.dispatch('MONEY_GAIN', parseInt(money));
     }
 
     pay(money) {
@@ -1515,10 +1511,7 @@ const Game = class Game {
         if (money > this.currentMoney()) {
             throw "You don't have enough money!";
         }
-        this.store.dispatch({
-            type: 'MONEY_PAY',
-            value: money
-        });
+        this.dispatch('MONEY_PAY', money);
     }
 
     getState(section) {
@@ -1529,24 +1522,24 @@ const Game = class Game {
         return this.getState('money');
     }
 
-    createRoom( type, width, height ) {
-        var room = new __WEBPACK_IMPORTED_MODULE_2__entities_room__["a" /* Room */]({type:type, width:width, height: height});
-        this.pay( room.price() );
-        this.store.dispatch({
-            type: 'ROOM_ADD',
-            value: room
+    createRoom(type, width, height) {
+        let room = __WEBPACK_IMPORTED_MODULE_2__entities_room__["a" /* default */].load({
+            type: type,
+            width: width,
+            height: height
         });
+        this.pay(__WEBPACK_IMPORTED_MODULE_2__entities_room__["a" /* default */].price(room));
+        this.dispatch('ROOM_ADD', room);
     }
 
     getRoom(index) {
-        var data=this.getState('rooms');
-        if ( typeof data[index] !== 'undefined') {
-            return new __WEBPACK_IMPORTED_MODULE_2__entities_room__["a" /* Room */](data[index]);
+        var data = this.getState('rooms');
+        if (typeof data[index] !== 'undefined') {
+            return data[index];
         }
         throw "Unexistent room: " + index;
     }
 }
-
 
 
 

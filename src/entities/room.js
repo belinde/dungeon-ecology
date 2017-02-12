@@ -1,36 +1,37 @@
-import { database as db, check } from '../database';
+import {
+    database,
+    check
+} from '../tools';
 
-let Room = class Room {
-    constructor(state) {
-        this.type = check(state, 'type');
-        this.height = parseInt(check(state, 'height'));
-        this.width = parseInt(check(state, 'width'));
+class Room {
+    load(state) {
+        let type = check(state, 'type');
+        let data = database('roomtypes', type);
+        let height = parseInt(check(state, 'height'));
+        let width = parseInt(check(state, 'width'));
+        let fert = data.fertility * width * height;
 
-        let data = db('roomtypes', this.type);
-
-        this.name = check(state, 'name', this.description());
-        this.fertility = check(state, 'fertility', data.fertility * this.width * this.height );
-        this.curFertility = check(state, 'curFertility', this.fertility );
-        this.luminance = check(state, 'luminance', data.luminance );
-        this.humidity = check(state, 'humidity', data.humidity );
-        this.vegetables = check(state, 'vegetables', []);
+        return {
+            type: type,
+            height: height,
+            width: width,
+            name: check(state, 'name', type + ' ' + width + 'X' + height),
+            fertility: check(state, 'fertility', fert),
+            curFertility: check(state, 'curFertility', fert),
+            luminance: check(state, 'luminance', data.luminance),
+            humidity: check(state, 'humidity', data.humidity),
+            vegetables: check(state, 'vegetables', [])
+        }
     }
 
-    description() {
-        return this.type + ' ' + this.width + 'X' + this.height;
+    price(room) {
+        return Math.round(room.width * room.height * room.fertility * room.luminance * room.humidity * database('setup', 'roomPriceModifier'));
     }
 
-    price() {
-        return parseInt(this.width * this.height * this.priceModifier());
-    }
-
-    priceModifier() {
-        return Math.round( this.fertility * this.luminance * this.humidity / 300);
-    }
-
-    rename(newName) {
-        this.name = '' + newName;
+    rename(room, newName) {
+        room.name = '' + newName;
+        return room;
     }
 }
 
-export { Room }
+export default new Room();
