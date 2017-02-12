@@ -4,7 +4,8 @@
   "description": "Manage a dungeon and try to balance its ecosystem",
   "main": "index.html",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack --progress",
+    "buildprod": "webpack --progress -p"
   },
   "repository": {
     "type": "git",
