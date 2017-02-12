@@ -3,6 +3,8 @@ import {
 } from 'redux'
 import combinedReducer from './reducers'
 import Room from './entities/room'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 const Game = class Game {
 
@@ -13,6 +15,10 @@ const Game = class Game {
             persistedState ? JSON.parse(persistedState) : {}
         );
         setInterval(() => this.saveGame(), 60000);
+        ReactDOM.render(
+            <h1>Hello, world!</h1>,
+            document.getElementById('root')
+        );
     }
 
     subscribe(callout) {
