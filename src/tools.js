@@ -18,12 +18,12 @@ let check = function check(state, key, def) {
 }
 
 let reducer = function reducer(calls, defaultStateValue) {
-    return (state = [], action) => {
-        if (typeof calls[action.type] === 'undefined') {
-            return state;
-        }
+    return (state, action) => {
         if (typeof state === 'undefined') {
             state = defaultStateValue;
+        }
+        if (typeof calls[action.type] === 'undefined') {
+            return state;
         }
         return calls[action.type](state, action.value);
     }

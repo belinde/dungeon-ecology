@@ -3,8 +3,8 @@ import {
     check
 } from '../tools';
 
-class Room {
-    load(state) {
+export default {
+    load: function load(state) {
         let type = check(state, 'type');
         let data = database('roomtypes', type);
         let height = parseInt(check(state, 'height'));
@@ -22,16 +22,12 @@ class Room {
             humidity: check(state, 'humidity', data.humidity),
             vegetables: check(state, 'vegetables', [])
         }
-    }
-
-    price(room) {
+    },
+    price: function price(room) {
         return Math.round(room.width * room.height * room.fertility * room.luminance * room.humidity * database('setup', 'roomPriceModifier'));
-    }
-
-    rename(room, newName) {
+    },
+    rename: function rename(room, newName) {
         room.name = '' + newName;
         return room;
     }
-}
-
-export default new Room();
+};
