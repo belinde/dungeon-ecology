@@ -1,10 +1,8 @@
-import {
-    createStore
-} from 'redux'
+import { createStore } from 'redux'
 import combinedReducer from './reducers'
 import Room from './entities/room'
 
-export default class Game {
+class Game {
 
     constructor() {
         let persistedState = localStorage.getItem('DungeonEcologyState');
@@ -12,15 +10,7 @@ export default class Game {
             combinedReducer,
             persistedState ? JSON.parse(persistedState) : {}
         );
-        setInterval(() => this.saveGame(), 60000);
-    }
-
-    subscribe(callout) {
-        let store = this.store;
-        this.store.subscribe(function () {
-            callout(store.getState());
-        });
-        callout(this.store.getState());
+        setInterval(()=>this.saveGame(), 60000);
     }
 
     dispatch(type, value) {
@@ -77,3 +67,5 @@ export default class Game {
         throw "Unexistent room: " + index;
     }
 }
+
+export default new Game();

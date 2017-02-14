@@ -2,15 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import Game from './game';
-import Money from './components/money'
-import {database} from './tools'
-
-console.log( database('setup', 'startingMoney'));
-const game = new Game();
+import DungeonEcologyApp from './components'
 
 ReactDOM.render(
-  <Provider store={game.store}><Money /></Provider>,
-  document.getElementById('root')
+  <Provider store={Game.store}><DungeonEcologyApp /></Provider>,
+  document.getElementById('DungeonEcologyRoot')
 )
-
-export default game;
